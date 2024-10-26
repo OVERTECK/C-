@@ -59,6 +59,13 @@ namespace Pract_3
 
                 string title = inputCategory.Text;
 
+                if (title == "Введите название категории")
+                {
+                    MessageBox.Show("Введите название!");
+
+                    return;
+                }
+
                 string sql = "INSERT INTO `db_1`.`categories`(`Title`) VALUES (@title);";
 
                 var command = new MySqlCommand(sql, myConnection);

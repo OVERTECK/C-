@@ -43,7 +43,6 @@ namespace Pract_3
                 }
 
                 listBox.ItemsSource = categList;
-
             }
             catch (Exception ex)
             {
@@ -82,17 +81,28 @@ namespace Pract_3
 
                 myConnection.Open();
 
-                int indexSelected = listBox.SelectedIndex + 1;
+                var selectedItems = listBox.SelectedItems;
 
-                MessageBox.Show(listBox.Items[listBox.SelectedIndex + 1].ToString());
+                var answerDelete = MessageBox.Show("Вы действительно хотите удалить выделенные элементы?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
-                var command = new MySqlCommand($"DELETE FROM db_1.categories WHERE id = @indexSelected", myConnection);
+                switch (answerDelete)
+                {
+                    case MessageBoxResult.Yes:
+                        foreach (Categories item in selectedItems)
+                        {
+                            var command = new MySqlCommand($"DELETE FROM db_1.categories WHERE id = @indexSelected", myConnection);
 
-                command.Parameters.AddWithValue("@indexSelected", indexSelected);
+                            command.Parameters.AddWithValue("@indexSelected", item.id);
 
-                command.ExecuteNonQuery();
+                            command.ExecuteNonQuery();
+                        }
 
-                fillListBox(listBox);
+                        fillListBox(listBox);
+
+                        break;
+                    case MessageBoxResult.No:
+                        return;
+                }
             }
             catch (Exception ex)
             {

@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <Grid>
-        <ListBox x:Name="listBox" Initialized="listBox_Initialized" Margin="200,10,200,100">
+        <ListBox SelectionMode="Multiple" x:Name="listBox" Initialized="listBox_Initialized" Margin="200,10,200,100">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel  Orientation="Horizontal">
