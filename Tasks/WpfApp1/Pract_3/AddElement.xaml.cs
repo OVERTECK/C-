@@ -45,7 +45,7 @@ namespace Pract_3
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void sendRequestBtn(object sender, RoutedEventArgs e)
         {
             var myConnection = new MySqlConnection();
 
@@ -53,18 +53,14 @@ namespace Pract_3
 
             try
             {
-                myConnection.ConnectionString = myConnectionString;
-
-                myConnection.Open();
-
                 string title = inputCategory.Text;
 
                 if (title == "Введите название категории")
-                {
-                    MessageBox.Show("Введите название!");
+                    throw new ArgumentException("Введите название!");
 
-                    return;
-                }
+                myConnection.ConnectionString = myConnectionString;
+
+                myConnection.Open();
 
                 string sql = "INSERT INTO `db_1`.`categories`(`Title`) VALUES (@title);";
 
@@ -75,16 +71,18 @@ namespace Pract_3
                 command.ExecuteNonQuery();
 
                 MainWindow.fillListBox(this.listBox);
+
+                myConnection.Close();
+
+                this.Close();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-            }
-            finally
-            {
-                myConnection.Close();
-
-                this.Close();
             }
         }
     }

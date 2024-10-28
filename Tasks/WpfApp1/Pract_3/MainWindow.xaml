@@ -20,6 +20,6 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Button Content="Добавить" HorizontalAlignment="Left" Margin="260,360,0,0" VerticalAlignment="Top" Height="40" Width="140" Click="addElementBtnClick"/>
-        <Button Content="Удалить" HorizontalAlignment="Left" Margin="421,360,0,0" VerticalAlignment="Top" Height="40" Width="140" Click="deleteClick"/>
+        <Button Content="Удалить" HorizontalAlignment="Left" Margin="418,360,0,0" VerticalAlignment="Top" Height="40" Width="140" Click="deleteClick"/>
     </Grid>
 </Window>
