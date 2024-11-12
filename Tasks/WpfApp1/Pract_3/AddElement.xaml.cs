@@ -53,7 +53,7 @@ namespace Pract_3
 
             try
             {
-                string title = inputCategory.Text;
+                string title = inputCategory.Text.Trim();
 
                 if (title == "Введите название категории")
                     throw new ArgumentException("Введите название!");
@@ -70,7 +70,7 @@ namespace Pract_3
 
                 command.ExecuteNonQuery();
 
-                MainWindow.fillListBox(this.listBox);
+                TableWindow.fillListBox(this.listBox);
 
                 myConnection.Close();
 

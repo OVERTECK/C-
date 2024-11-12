@@ -1,0 +1,26 @@
+﻿<Window x:Class="Pract_3.TableWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pract_3"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <Grid>
+        <Frame x:Name="frame"></Frame>
+        <ListBox SelectionMode="Multiple" x:Name="listBox" Initialized="listBox_Initialized" Margin="200,10,200,100">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel  Orientation="Horizontal">
+                        <TextBlock Width="200" Text="{Binding id}"></TextBlock>
+                        <TextBlock Text="{Binding title}"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Content="Добавить" HorizontalAlignment="Left" Margin="260,360,0,0" VerticalAlignment="Top" Height="40" Width="140" Click="addElementBtnClick"/>
+        <Button Content="Удалить" HorizontalAlignment="Left" Margin="418,360,0,0" VerticalAlignment="Top" Height="40" Width="140" Click="deleteClick"/>
+    </Grid>
+</Window>

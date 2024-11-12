@@ -22,3 +22,9 @@ D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\Pract_3.exe
 D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\Pract_3.pdb
 D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\AddElement.g.cs
 D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\AddElement.baml
+D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\Input.g.cs
+D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\Input.baml
+D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\TableWindow.g.cs
+D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\TableWindow.baml
+D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\Registration.g.cs
+D:\Projects\C#\Tasks\WpfApp1\Pract_3\obj\Debug\Registration.baml
