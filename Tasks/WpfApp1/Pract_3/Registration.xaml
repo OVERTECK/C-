@@ -13,17 +13,24 @@
             <ColumnDefinition Width="247*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height=".3*"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="*"/>
-            <RowDefinition Height=".6*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="30"
-            Text="Регистрация"/>
-        
+        <Border Grid.Row="0"
+                Background="Gray"
+                BorderBrush="Black" 
+                BorderThickness="0 0 0 1">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="30"
+                Text="Регистрация"/>
+        </Border>
+
+
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height=".5*"></RowDefinition>
@@ -42,7 +49,7 @@
                 HorizontalAlignment="Right"
                 Grid.Row="0"
                 Grid.Column="0"
-                FontSize="20"
+                FontSize="25"
                 TextAlignment="Center"
                 Text="Эл. почта"
                 Foreground="Gray"/>
@@ -64,7 +71,7 @@
                 HorizontalAlignment="Right"
                 Grid.Row="1"
                 Grid.Column="0"
-                FontSize="20"
+                FontSize="25"
                 TextAlignment="Center"
                 Text="Логин"
                 Foreground="Gray"/>
@@ -83,7 +90,7 @@
             <TextBlock 
                 Grid.Row="2"
                 Grid.Column="0"
-                FontSize="20" 
+                FontSize="25" 
                 TextAlignment="Center"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
@@ -115,7 +122,7 @@
             <TextBlock 
                 Grid.Row="3"
                 Grid.Column="0"
-                FontSize="20" 
+                FontSize="25" 
                 TextAlignment="Center"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
@@ -158,17 +165,18 @@
             Click="CheckBox_Click"/>
 
         <Button
+            BorderThickness="0"
             Grid.Row="2"
-            VerticalAlignment="Top"
+            VerticalAlignment="Bottom"
             HorizontalAlignment="Center"
             Content="Авторизация"
             FontSize="15"
             Foreground="#2665bd"
-            Background="#FFE2E2E2"
+            Background="Transparent"
             Click="TextBlock_Click"/>
 
-        <Button Grid.Row="2"
-            VerticalAlignment="Center"
+        <Button Grid.Row="3"
+            VerticalAlignment="Top"
             HorizontalAlignment="Center"
             Width="200"
             Height="44"
@@ -177,6 +185,6 @@
             VerticalContentAlignment="Center"
             HorizontalContentAlignment="Center"
             x:Name="btnInput" 
-            Click="btnInput_Click"/>
+            Click="btnInput_Click" Margin="0,28,0,0"/>
     </Grid>
 </Page>
