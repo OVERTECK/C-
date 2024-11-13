@@ -81,7 +81,7 @@ namespace Pract_3
                 return;
             }
 
-            string hashPassword = Hash.createHash(password).Replace("-", "");
+            string hashPassword = Hash.createHash(password);
 
             command = new MySqlCommand("SELECT COUNT(*) = 1 FROM db_1.user WHERE email = @email AND password = @password", myConnection);
 

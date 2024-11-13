@@ -66,7 +66,7 @@ namespace Pract_3
                 return;
             }
 
-            string hashPassword = Hash.createHash(password).Replace("-", "");
+            string hashPassword = Hash.createHash(password);
 
             var myConnection = new MySqlConnection();
 
