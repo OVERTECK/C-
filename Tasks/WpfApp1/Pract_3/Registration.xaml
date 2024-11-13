@@ -111,13 +111,13 @@
             <TextBox
                 Grid.Row="2"
                 Grid.Column="1"
-                x:Name="tbPassword"
+                x:Name="textboxPassword"
                 FontSize="25"
                 Visibility="Hidden"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 VerticalContentAlignment="Center"
-                Width="500"></TextBox>
+                Width="500" TextChanged="textboxPassword_TextChanged"></TextBox>
 
             <TextBlock 
                 Grid.Row="3"
@@ -143,13 +143,13 @@
             <TextBox
                 Grid.Row="3"
                 Grid.Column="1"
-                x:Name="tbPassword_2"
+                x:Name="textboxPassword_2"
                 FontSize="25"
                 Visibility="Hidden"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
                 VerticalContentAlignment="Center"
-                Width="500"></TextBox>
+                Width="500" TextChanged="textboxPassword_2_TextChanged"></TextBox>
         </Grid>
 
         <CheckBox

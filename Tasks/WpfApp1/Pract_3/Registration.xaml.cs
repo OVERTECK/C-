@@ -110,25 +110,22 @@ namespace Pract_3
         {
             var checkBox = sender as CheckBox;
 
-            string password_1 = passBox.Password;
-            string password_2 = passBox_2.Password;
-
             if (checkBox.IsChecked.Value)
             {
                 passBox.Visibility = Visibility.Hidden;
-                tbPassword.Visibility = Visibility.Visible;
-                tbPassword.Text = password_1;
+                textboxPassword.Visibility = Visibility.Visible;
+                textboxPassword.Text = passBox.Password;
 
                 passBox_2.Visibility = Visibility.Hidden;
-                tbPassword_2.Visibility = Visibility.Visible;
-                tbPassword_2.Text = password_2;
+                textboxPassword_2.Visibility = Visibility.Visible;
+                textboxPassword_2.Text = passBox_2.Password;
             }
             else
             {
-                tbPassword.Visibility = Visibility.Hidden;
+                textboxPassword.Visibility = Visibility.Hidden;
                 passBox.Visibility = Visibility.Visible;
 
-                tbPassword_2.Visibility = Visibility.Hidden;
+                textboxPassword_2.Visibility = Visibility.Hidden;
                 passBox_2.Visibility = Visibility.Visible;
             }
         }
@@ -136,6 +133,16 @@ namespace Pract_3
         private void TextBlock_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(Input.getContext());
+        }
+
+        private void textboxPassword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            passBox.Password = textboxPassword.Text;
+        }
+
+        private void textboxPassword_2_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            passBox_2.Password = textboxPassword_2.Text;
         }
     }
 }
