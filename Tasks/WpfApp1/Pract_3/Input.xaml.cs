@@ -81,10 +81,12 @@ namespace Pract_3
                 return;
             }
 
+            string hashPassword = Hash.createHash(password).Replace("-", "");
+
             command = new MySqlCommand("SELECT COUNT(*) = 1 FROM db_1.user WHERE email = @email AND password = @password", myConnection);
 
             command.Parameters.AddWithValue("@email", email);
-            command.Parameters.AddWithValue("@password", password);
+            command.Parameters.AddWithValue("@password", hashPassword);
 
             response = command.ExecuteScalar().ToString();
 
@@ -94,6 +96,8 @@ namespace Pract_3
 
                 return;
             }
+
+            myConnection.Close();
 
             var talbeWindow = new TableWindow();
 

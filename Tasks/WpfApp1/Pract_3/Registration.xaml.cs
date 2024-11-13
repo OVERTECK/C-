@@ -66,6 +66,8 @@ namespace Pract_3
                 return;
             }
 
+            string hashPassword = Hash.createHash(password).Replace("-", "");
+
             var myConnection = new MySqlConnection();
 
             string myConnectionString = ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString;
@@ -93,7 +95,7 @@ namespace Pract_3
 
             command.Parameters.AddWithValue("@login", login);
             command.Parameters.AddWithValue("@email", email);
-            command.Parameters.AddWithValue("@password", password);
+            command.Parameters.AddWithValue("@password", hashPassword);
 
             command.ExecuteNonQuery();
 
