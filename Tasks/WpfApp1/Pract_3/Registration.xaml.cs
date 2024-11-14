@@ -52,9 +52,30 @@ namespace Pract_3
             string password = passBox.Password;
             string password_2 = passBox_2.Password;
 
-            if (email == "" || password == "" || login == "" || password_2 == "")
+            if (email == "")
             {
-                MessageBox.Show("Заполните поля!");
+                MessageBox.Show("Заполните поле \"Эл. Почта\"!");
+
+                return;
+            }
+
+            if (login == "")
+            {
+                MessageBox.Show("Заполните поле \"Логин\"");
+
+                return;
+            }
+
+            if (password == "")
+            {
+                MessageBox.Show("Заполните поле \"Пароль\"");
+
+                return;
+            }
+
+            if (password_2 == "")
+            {
+                MessageBox.Show("Заполните поле \"Повторно пароль\"");
 
                 return;
             }
@@ -63,6 +84,15 @@ namespace Pract_3
             {
                 MessageBox.Show("Пароли не совпадают.");
 
+                return;
+            }
+
+            Window captchawindow = new CAPTCHAWindow();
+
+            captchawindow.Owner = owner;
+
+            if (captchawindow.ShowDialog() != true)
+            {
                 return;
             }
 

@@ -22,6 +22,8 @@ namespace Pract_3
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static MainWindow context = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -31,6 +33,18 @@ namespace Pract_3
             input.owner = this;
             
             frame.Content = input;
+        }
+
+        public static MainWindow getContext()
+        {
+            if (context == null)
+            {
+                context = new MainWindow();
+
+                return context;
+            }
+
+            return context;
         }
     }
 }

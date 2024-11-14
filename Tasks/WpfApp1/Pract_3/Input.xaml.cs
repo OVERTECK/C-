@@ -51,10 +51,26 @@ namespace Pract_3
             string email = tbox_1.Text.Trim();
             string password = passBox.Password;
             
-            if (email == "" || password == "")
+            if (email == "")
             {
-                MessageBox.Show("Заполните поля!");
+                MessageBox.Show("Заполните поле \"Эл. Почта\"!");
 
+                return;
+            }
+
+            if (password == "")
+            {
+                MessageBox.Show("Заполните поле \"Пароль\"");
+
+                return;
+            }
+
+            Window captchawindow = new CAPTCHAWindow();
+
+            captchawindow.Owner = this.owner;
+
+            if (captchawindow.ShowDialog() != true)
+            {
                 return;
             }
 
@@ -129,6 +145,11 @@ namespace Pract_3
             Registration.owner = this.owner;
 
             NavigationService.Navigate(Registration.getContext());
+        }
+
+        private void tbPassword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            passBox.Password = tbPassword.Text;
         }
     }
 }

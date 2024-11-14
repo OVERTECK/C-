@@ -87,15 +87,14 @@
 
         <TextBox
             x:Name="tbPassword"
-            Height="50"
             Width="500"
             Grid.Row="3"
             Grid.Column="1"
             VerticalAlignment="Top"
             HorizontalAlignment="Left"
-            FontSize="30"
+            FontSize="25"
             Visibility="Hidden"
-            VerticalContentAlignment="Center"></TextBox>
+            VerticalContentAlignment="Center" TextChanged="tbPassword_TextChanged"></TextBox>
 
         <TextBlock Grid.Row="3"
                    Grid.Column="0"
