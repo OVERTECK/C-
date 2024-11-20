@@ -1,22 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace Pract_3
 {
-    /// <summary>
-    /// Логика взаимодействия для CAPTCHAWindow.xaml
-    /// </summary>
     public partial class CAPTCHAWindow : Window
     {
         private string randomWord = RandomWord.createRandomWord(8);
@@ -41,11 +26,9 @@ namespace Pract_3
                 MessageBox.Show("Текст не совпадает!");
 
                 return;
-
-            } else
-            {
-                DialogResult = true;
             }
+            
+            DialogResult = true;
         }
     }
 }

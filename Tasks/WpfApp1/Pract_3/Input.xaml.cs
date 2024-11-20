@@ -1,28 +1,19 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Pract_3
 {
-    /// <summary>
-    /// Логика взаимодействия для Input.xaml
-    /// </summary>
     public partial class Input : Page
     {
-        public Window owner;
+        private static string myConnectionString = ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString;
+
+        private static MySqlConnection myConnection = new MySqlConnection(myConnectionString);
+
+        public static Window owner;
 
         private static Input context = null;
 
@@ -34,12 +25,10 @@ namespace Pract_3
         public static Input getContext()
         {
             if (context == null)
-            {
                 context = new Input();
-            }
 
             return context;
-        }
+         }
 
         private void Page_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -65,32 +54,26 @@ namespace Pract_3
                 return;
             }
 
-            Window captchawindow = new CAPTCHAWindow();
+            Window captchaWindow = new CAPTCHAWindow();
 
-            captchawindow.Owner = this.owner;
+            captchaWindow.Owner = owner;
 
-            if (captchawindow.ShowDialog() != true)
+            if (captchaWindow.ShowDialog() != true)
             {
                 return;
             }
 
-            var myConnection = new MySqlConnection();
-
-            string myConnectionString = ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString;
-
-            myConnection.ConnectionString = myConnectionString;
-
             myConnection.Open();
 
-            var command = new MySqlCommand("SELECT COUNT(*) FROM db_1.user WHERE email = @email", myConnection);
+            var command = new MySqlCommand("SELECT COUNT(*) " +
+                                           "FROM db_1.user " +
+                                           "WHERE email = @email", myConnection);
 
             command.Parameters.AddWithValue("@email", email);
 
             var response = command.ExecuteScalar().ToString();
 
-            bool availability = response == "1";
-
-            if (!availability)
+            if (response != "1")
             {
                 MessageBox.Show("Аккаунт не найден.");
 
@@ -142,7 +125,7 @@ namespace Pract_3
 
         private void TextBlock_Click(object sender, RoutedEventArgs e)
         {
-            Registration.owner = this.owner;
+            Registration.owner = owner;
 
             NavigationService.Navigate(Registration.getContext());
         }

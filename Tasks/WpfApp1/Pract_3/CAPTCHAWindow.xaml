@@ -62,6 +62,8 @@
             Width="200"
             Height="45"
             VerticalAlignment="Center"
-            HorizontalAlignment="Center" Click="Button_Click"></Button>
+            HorizontalAlignment="Center" 
+            Click="Button_Click"
+            IsDefault="True"></Button>
     </Grid>
 </Window>

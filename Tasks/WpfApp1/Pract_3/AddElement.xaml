@@ -5,18 +5,95 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pract_3"
         mc:Ignorable="d"
-        Title="AddElement" Height="400" Width="350" Padding="0,0,600,500"
+        Title="AddElement" Height="400" Width="800"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize" PreviewMouseDown="Window_PreviewMouseDown">
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+        <Style 
+            TargetType="TextBlock"
+            x:Key="textBlockStyle">
+
+            <Setter Property="FontSize" Value="25"></Setter>
+            <Setter Property="Foreground" Value="Gray"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+            <Setter Property="TextAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+
+        <Style 
+            TargetType="TextBox"
+            x:Key="textBoxStyle">
+
+            <Setter Property="FontSize" Value="25"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Width" Value="500"></Setter>
+            <Setter Property="Margin" Value="30 0 0 0"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+        </Style>
+    </Window.Resources>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="29*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="123*"></RowDefinition>
+            <RowDefinition Height="127*"/>
             <RowDefinition Height="74.04"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Добавление элемента" HorizontalAlignment="Center" Margin="0,10,0,0" FontSize="20" Width="202"></TextBlock>
-        <TextBox MaxLength="50" Foreground="Gray" Grid.Row="1" FontSize="17" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Center" Text="Введите название категории" Width="330" x:Name="inputCategory" Height="30" PreviewGotKeyboardFocus="inputCategory_PreviewGotKeyboardFocus" LostKeyboardFocus="inputCategory_LostKeyboardFocus"/>
-        <Button FontSize="20" Content="Добавить" Grid.Row="2" Click="sendRequestBtn" Margin="100,10,100,20"/>
+
+        <Border
+            BorderThickness="0 0 0 1"
+            Background="Gray"
+            Grid.ColumnSpan="2">
+        </Border>
+        
+        <TextBlock 
+                   Text="Добавление элемента" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   FontSize="25" Grid.ColumnSpan="2"/>
+
+        <TextBlock
+                   Grid.Row="1"
+                   Text="Категория"
+                   Style="{StaticResource ResourceKey=textBlockStyle}"></TextBlock>
+
+        <TextBlock
+                   Grid.Row="2"
+                   Text="Продукт"
+                   Style="{StaticResource ResourceKey=textBlockStyle}"
+                   VerticalAlignment="Top"></TextBlock>
+
+
+        <ComboBox
+            x:Name="comboBox"
+            Grid.Row="1" 
+            Grid.Column="1"
+            Margin="30,43,0,43"
+            HorizontalAlignment="Left"
+            Width="200">
+        </ComboBox>
+
+        <TextBox
+            x:Name="tb_2"
+            Grid.Row="2"
+            Grid.Column="1"
+            Style="{StaticResource textBoxStyle}"
+            VerticalAlignment="Top">
+        </TextBox>
+
+        <Button FontSize="20" 
+                Content="Добавить" 
+                Grid.Row="3" 
+                Click="sendRequestBtn" 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Width="150"
+                Height="40" Grid.Column="1" Margin="105,0,0,0"/>
     </Grid>
 </Window>

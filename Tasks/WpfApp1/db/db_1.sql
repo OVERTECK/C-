@@ -24,10 +24,10 @@ DROP TABLE IF EXISTS `categories`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categories` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `Title` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,8 +36,36 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'A'),(2,'A1'),(3,'B'),(4,'BE'),(5,'B1'),(6,'C'),(7,'CE'),(8,'C1'),(9,'C1E'),(10,'D'),(11,'DE'),(28,'SELECT * FROM `db_1`.`categories`;');
+INSERT INTO `categories` VALUES (1,'Сыры'),(2,'Мясо и птица'),(3,'Колбаса и сосиски'),(4,'Замороженные продукты'),(5,'Здоровый выбор'),(6,'Сладости'),(7,'Овощи и зелень');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product` (
+  `idproduct` int unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(200) NOT NULL,
+  `categories_id` int NOT NULL,
+  PRIMARY KEY (`idproduct`,`categories_id`),
+  UNIQUE KEY `idproduct_UNIQUE` (`idproduct`),
+  KEY `fk_product_categories_idx` (`categories_id`),
+  CONSTRAINT `fk_product_categories` FOREIGN KEY (`categories_id`) REFERENCES `categories` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product`
+--
+
+LOCK TABLES `product` WRITE;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` VALUES (1,'Сыр Viola Бутербродный полутвердый нарезка 45% БЗМЖ 120г',1),(2,'Сыр Свежий Ряд российский нарезка 50% БЗМЖ 150г',1),(3,'Сыр Liebendorf Гауда полутвердый нарезка БЗМЖ 150г',1),(4,'Напиток овсяный Nemoloko шоколадный 3.2% 1л',5),(5,'Напиток овсяный Nemoloko классический 3.2% 1л',5),(6,'Лед Завод Льда пищевой 1кг',4),(7,'Пломбир Золотой Стандарт С Таежной Черникой с черничным наполнителем в вафельном стаканчике 12% БЗМЖ 93г',4),(8,'Бекон Мясная Ферма сырокопченый 150г',3),(9,'Колбаса Черкизово Сальчичон сырокопченая нарезка 100г',3),(10,'Тушка цыпленка охлажденная',2),(11,'Филе куриное охлажденное',2);
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -51,9 +79,9 @@ CREATE TABLE `user` (
   `idUser` int NOT NULL AUTO_INCREMENT,
   `login` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` varchar(100) DEFAULT NULL,
+  `password` varchar(200) NOT NULL,
   PRIMARY KEY (`idUser`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +90,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (6,'root','yes@gmail.com','4813494D137E1631BBA301D5ACAB6E7BB7AA74CE1185D456565EF51D737677B2'),(8,'123','123','A665A45920422F9D417E4867EFDC4FB8A04A1F3FFF1FA07E998E86F7F7A27AE3'),(9,'123','1234','03AC674216F3E15C761EE1A5E255F067953623C8B388B4459E13F978D7C846F4');
+INSERT INTO `user` VALUES (11,'123','123','A6-65-A4-59-20-42-2F-9D-41-7E-48-67-EF-DC-4F-B8-A0-4A-1F-3F-FF-1F-A0-7E-99-8E-86-F7-F7-A2-7A-E3'),(12,'123','1234123','A6-65-A4-59-20-42-2F-9D-41-7E-48-67-EF-DC-4F-B8-A0-4A-1F-3F-FF-1F-A0-7E-99-8E-86-F7-F7-A2-7A-E3'),(13,'123','1231','A6-65-A4-59-20-42-2F-9D-41-7E-48-67-EF-DC-4F-B8-A0-4A-1F-3F-FF-1F-A0-7E-99-8E-86-F7-F7-A2-7A-E3');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -75,4 +103,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-13 15:42:08
+-- Dump completed on 2024-11-20 22:35:25

@@ -7,24 +7,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Pract_3
 {
-    /// <summary>
-    /// Логика взаимодействия для Registration.xaml
-    /// </summary>
     public partial class Registration : Page
     {
         public static Window owner;
 
+        private static string myConnectionString = ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString;
+
+        private static MySqlConnection myConnection = new MySqlConnection(myConnectionString);
+
         private static Registration context = null;
+
         public Registration()
         {
             InitializeComponent();
@@ -33,9 +30,7 @@ namespace Pract_3
         public static Registration getContext()
         {
             if (context == null)
-            {
                 context = new Registration();
-            }
 
             return context;
         }
@@ -98,12 +93,6 @@ namespace Pract_3
 
             string hashPassword = Hash.createHash(password);
 
-            var myConnection = new MySqlConnection();
-
-            string myConnectionString = ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString;
-
-            myConnection.ConnectionString = myConnectionString;
-
             myConnection.Open();
 
             var command = new MySqlCommand("SELECT COUNT(*) FROM db_1.user WHERE email = @email", myConnection);
@@ -112,9 +101,7 @@ namespace Pract_3
 
             var response = command.ExecuteScalar().ToString();
 
-            bool availability = response == "1";
-
-            if (availability)
+            if (response == "1")
             {
                 MessageBox.Show("Почта занята.");
 
@@ -128,6 +115,8 @@ namespace Pract_3
             command.Parameters.AddWithValue("@password", hashPassword);
 
             command.ExecuteNonQuery();
+
+            myConnection.Close();
 
             var talbeWindow = new TableWindow();
 

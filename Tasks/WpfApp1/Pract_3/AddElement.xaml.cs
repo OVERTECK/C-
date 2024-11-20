@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Common;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,55 +19,59 @@ namespace Pract_3
             InitializeComponent();
 
             this.listBox = listBox;
-        }
 
-        private void inputCategory_PreviewGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            if (inputCategory.Text == "Введите название категории")
+            string myConnectionString = ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString;
+
+            var myConnection = new MySqlConnection(myConnectionString);
+
+            myConnection.Open();
+
+            var command = new MySqlCommand("SELECT title " +
+                                           "FROM db_1.categories " +
+                                           "ORDER BY title DESC", myConnection);
+
+            var categList = new List<string> { };
+
+            using (MySqlDataReader reader = command.ExecuteReader())
             {
-                inputCategory.Text = "";
+                while (reader.Read())
+                {
+                    string categories_title = Convert.ToString(reader[0]);
 
-                inputCategory.Foreground = Brushes.Black;
+                    categList.Add(categories_title);
+                }
             }
-        }
 
-        private void Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Keyboard.ClearFocus();
-        }
-
-        private void inputCategory_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            if (inputCategory.Text == "")
-            {
-                inputCategory.Foreground = Brushes.Gray;
-
-                inputCategory.Text = "Введите название категории";
-            }
+            comboBox.ItemsSource = categList;
         }
 
         private void sendRequestBtn(object sender, RoutedEventArgs e)
         {
-            var myConnection = new MySqlConnection();
-
             string myConnectionString = ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString;
+
+            var myConnection = new MySqlConnection(myConnectionString);
 
             try
             {
-                string title = inputCategory.Text.Trim();
+                string categoriesTitle = comboBox.Text.Trim();
 
-                if (title == "Введите название категории")
-                    throw new ArgumentException("Введите название!");
+                string productTitle = tb_2.Text.Trim();
 
-                myConnection.ConnectionString = myConnectionString;
+                if (categoriesTitle == "")
+                    throw new ArgumentException("Введите название категории!");
+
+                if (productTitle == "")
+                    throw new ArgumentException("Введите название продукта!");
 
                 myConnection.Open();
 
-                string sql = "INSERT INTO `db_1`.`categories`(`Title`) VALUES (@title);";
+                string sql = "INSERT INTO `db_1`.`product`(`title`, `categories_id`) " +
+                    "VALUES (@title, (SELECT id FROM `db_1`.`categories` WHERE @categories_name = title))";
 
                 var command = new MySqlCommand(sql, myConnection);
 
-                command.Parameters.AddWithValue("@title", title);
+                command.Parameters.AddWithValue("@title", productTitle);
+                command.Parameters.AddWithValue("@categories_name", categoriesTitle);
 
                 command.ExecuteNonQuery();
 

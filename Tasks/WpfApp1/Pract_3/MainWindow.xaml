@@ -7,9 +7,12 @@
         mc:Ignorable="d"
         Title="" Height="450" Width="800"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
+        MinHeight="450"
+        MinWidth="800">
+    
     <Grid>
         <Frame x:Name="frame"
-               NavigationUIVisibility="Hidden"></Frame>
+               NavigationUIVisibility="Hidden">
+        </Frame>
     </Grid>
 </Window>

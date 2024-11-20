@@ -9,18 +9,82 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <Grid>
-        <Frame x:Name="frame"></Frame>
-        <ListBox SelectionMode="Multiple" x:Name="listBox" Initialized="listBox_Initialized" Margin="200,10,200,100">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="57*"/>
+            <RowDefinition Height="293*"/>
+            <RowDefinition Height="84*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Orientation="Horizontal"
+            HorizontalAlignment="Left"
+            Margin="50 0 0 0"
+            VerticalAlignment="Center">
+            <TextBlock
+                Text="Фильтрация категории"
+                FontSize="15"></TextBlock>
+            <ComboBox
+                Name="comboBoxFilter"
+                Margin="20 0 0 0"
+                Width="150"
+                Height="30" 
+                Initialized="ComboBox_Initialized" 
+                SelectionChanged="comboBoxFilter_SelectionChanged"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"/>
+            
+        </StackPanel>
+
+        <ListBox x:Name="listBox" 
+                  Grid.Row="1"
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Center"
+                  Width="700"
+                  Height="250">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel  Orientation="Horizontal">
-                        <TextBlock Width="200" Text="{Binding id}"></TextBlock>
+                        <TextBlock x:Name="colomn1" Width="200" Text="{Binding categories_title}"></TextBlock>
                         <TextBlock Text="{Binding title}"></TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <!--IsReadOnly="True"
+                  AutoGenerateColumns="False"
+                  RowHeaderWidth="0"-->
+            <!--<DataGrid.Columns>
+                <DataGridTextColumn 
+                    Header="Категория"
+                    Width=".2*"
+                    Binding="{Binding categories_title}"></DataGridTextColumn>
+
+                <DataGridTextColumn
+                    Header="Название товара"
+                    Width=".4*"
+                    Binding="{Binding title}"></DataGridTextColumn>
+            </DataGrid.Columns>-->
         </ListBox>
-        <Button Content="Добавить" HorizontalAlignment="Left" Margin="260,360,0,0" VerticalAlignment="Top" Height="40" Width="140" Click="addElementBtnClick"/>
-        <Button Content="Удалить" HorizontalAlignment="Left" Margin="418,360,0,0" VerticalAlignment="Top" Height="40" Width="140" Click="deleteClick"/>
+
+        <StackPanel
+        Orientation="Horizontal"
+        HorizontalAlignment="Center"
+        Grid.Row="1" Margin="0,293,0,0" Grid.RowSpan="2">
+
+            <Button Content="Добавить" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center" 
+            Height="40" 
+            Width="140" 
+            Click="addElementBtnClick"/>
+
+            <Button Content="Удалить"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Height="40"
+            Width="140"
+            Click="deleteClick"
+            Margin="20 0 0 0"/>
+        </StackPanel>
+
     </Grid>
 </Window>

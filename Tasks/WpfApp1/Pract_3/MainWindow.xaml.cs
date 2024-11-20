@@ -22,29 +22,27 @@ namespace Pract_3
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static MainWindow context = null;
+        private static MainWindow _context = null;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            var input = new Input();
+            Input.owner = this;
 
-            input.owner = this;
-            
-            frame.Content = input;
+            frame.Content = Input.getContext();
         }
 
         public static MainWindow getContext()
         {
-            if (context == null)
+            if (_context == null)
             {
-                context = new MainWindow();
+                _context = new MainWindow();
 
-                return context;
+                return _context;
             }
 
-            return context;
+            return _context;
         }
     }
 }
