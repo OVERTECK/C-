@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Authorization"
+             Title="Авторизация">
+
+    <ScrollView>
+        <Grid
+            Margin="10"
+            Padding="20">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height=".3*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height=".5*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackLayout
+                Grid.Row="2"
+                Spacing="20">
+                <Entry
+                    x:Name="entryEmail"
+                    Grid.Row="1"
+                    MinimumHeightRequest="44"
+                    MinimumWidthRequest="263"
+                    FontSize="20"
+                    VerticalOptions="End"
+                    Placeholder="Введите почту"
+                    Keyboard="Email"
+                    ClearButtonVisibility="WhileEditing"
+                    MaxLength="100"
+                    AbsoluteLayout.LayoutBounds="55, 100, Autosize, Autosize">
+                </Entry>
+
+                <Entry
+                    x:Name="entryPassword"
+                    Grid.Row="2"
+                    FontSize="20"
+                    MinimumHeightRequest="44"
+                    MinimumWidthRequest="263"
+                    VerticalOptions="End"
+                    Placeholder="Введите пароль"
+                    ClearButtonVisibility="WhileEditing"
+                    IsPassword="True"
+                    Keyboard="Plain"
+                    MaxLength="100">
+                </Entry>
+
+                <HorizontalStackLayout
+                    Grid.Row="3"
+                    VerticalOptions="Start"
+                    HorizontalOptions="End">
+                    <Label
+                        VerticalOptions="Center">
+                        Показать пароль
+                    </Label>
+
+                    <CheckBox
+                        x:Name="checkBox"
+                        VerticalOptions="Center"
+                        CheckedChanged="CheckBox_CheckedChanged">
+                    </CheckBox>
+                </HorizontalStackLayout>
+
+                <Button
+                    Background="Transparent"
+                    TextColor="Blue"
+                    HorizontalOptions="Center"
+                    Text="Регистрация"
+                    Clicked="ClickedRegistration">
+
+                </Button>
+            </StackLayout>
+
+            <Button
+                Grid.Row="4"
+                VerticalOptions="Start"
+                x:Name="CounterBtn"
+                FontSize="20"
+                MinimumHeightRequest="44"
+                MinimumWidthRequest="263"
+                Text="Авторизоваться" 
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"/>
+        </Grid>
+    </ScrollView>
+</ContentPage>
