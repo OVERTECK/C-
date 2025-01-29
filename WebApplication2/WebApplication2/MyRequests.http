@@ -1,0 +1,20 @@
+﻿GET https://localhost:7166/users
+
+###
+
+GET https://localhost:7166/users/11
+
+###
+
+POST https://localhost:7166/login
+content-type: application/json
+
+{
+  "login": "newUser",
+  "password": "123456",
+  "email": "newU12ser11@gmail.com"
+}
+
+###
+
+DELETE https://localhost:7166/users/delete/117
