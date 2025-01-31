@@ -1,4 +1,4 @@
-﻿GET https://localhost:7166/users
+﻿GET https://localhost:7166/products
 
 ###
 
@@ -17,4 +17,20 @@ content-type: application/json
 
 ###
 
+POST https://localhost:7166/register
+content-type: application/json
+
+{
+  "login": "newUser",
+  "password": "123456",
+  "email": "122346"
+}
+
+###
+
+
 DELETE https://localhost:7166/users/delete/117
+
+
+###
+

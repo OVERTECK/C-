@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace WebApplication2.Entities;
 
@@ -15,5 +16,6 @@ public partial class Product
 
     public byte[]? Image { get; set; }
 
+    [JsonIgnore]
     public virtual Category Categories { get; set; } = null!;
 }
