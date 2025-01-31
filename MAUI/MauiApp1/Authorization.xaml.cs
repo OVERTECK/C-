@@ -1,4 +1,6 @@
+using Microsoft.Maui.ApplicationModel.Communication;
 using Microsoft.Maui.Controls.PlatformConfiguration.TizenSpecific;
+using Newtonsoft.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -12,51 +14,52 @@ public partial class Authorization : ContentPage
 		InitializeComponent();
 	}
 
-    private static Authorization context = null;
-
-    public static Authorization GetContext()
-    {
-        if (context == null)
-        {
-            context = new Authorization();
-
-            return context;
-        }
-
-        return context;
-    }
-
     private void ClickedRegistration(object sender, EventArgs e)
     {
         Navigation.PushAsync(new Regisration());
     }
 
-    private async void OnCounterClicked(object sender, EventArgs e)
+    private void OnCounterClicked(object sender, EventArgs e)
     {
-        var user = new
-        {
-            email = entryEmail.Text,
-            password = Hash.createHash(entryPassword.Text)
-        };
+        Navigation.PushAsync(new ProductsView());
 
-        var userJson = JsonSerializer.Serialize(user);
 
-        using (HttpClient httpClient = new HttpClient())
-        {
-            var httpContent = new StringContent(userJson, Encoding.UTF8, "application/json");
+        //var emailField = entryEmail.Text;
+        //var passwordField = entryPassword.Text;
 
-            var response = await httpClient.PostAsync("https://localhost:7166/login", httpContent);
+        //signalLabelEmail.IsVisible = string.IsNullOrEmpty(emailField)
+        //    ? true : false;
 
-            if (response.IsSuccessStatusCode)
-            {
+        //signalLabelPassword.IsVisible = string.IsNullOrEmpty(passwordField)
+        //    ? true : false;
 
-                await Navigation.PushAsync(new ProductsView());
-            }
-            else
-            {
-                await DisplayAlert("Ошибка", "Почта или пароль не верные", "Ок");
-            }
-        }
+        //if (signalLabelEmail.IsVisible || signalLabelPassword.IsVisible)
+        //    return;
+
+        //var user = new
+        //{
+        //    email = emailField,
+        //    password = Hash.createHash(passwordField)
+        //};
+
+        //var userJson = JsonConvert.SerializeObject(user);
+
+        //using (HttpClient httpClient = new HttpClient())
+        //{
+        //    var httpContent = new StringContent(userJson, Encoding.UTF8, "application/json");
+
+        //    var response = await httpClient.PostAsync("https://localhost:7166/login", httpContent);
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+
+        //        await Navigation.PushAsync(new ProductsView());
+        //    }
+        //    else
+        //    {
+        //        await DisplayAlert("Ошибка", "Почта или пароль не верные", "Ок");
+        //    }
+        //}
     }
 
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)

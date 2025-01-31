@@ -19,34 +19,60 @@
 
             <StackLayout
                 Grid.Row="2"
-                Spacing="20">
-                <Entry
-                    x:Name="entryEmail"
-                    Grid.Row="1"
-                    MinimumHeightRequest="44"
-                    MinimumWidthRequest="263"
-                    FontSize="20"
-                    VerticalOptions="End"
-                    Placeholder="Введите почту"
-                    Keyboard="Email"
-                    ClearButtonVisibility="WhileEditing"
-                    MaxLength="100"
-                    AbsoluteLayout.LayoutBounds="55, 100, Autosize, Autosize">
-                </Entry>
+                Spacing="15">
 
-                <Entry
-                    x:Name="entryPassword"
-                    Grid.Row="2"
-                    FontSize="20"
-                    MinimumHeightRequest="44"
-                    MinimumWidthRequest="263"
-                    VerticalOptions="End"
-                    Placeholder="Введите пароль"
-                    ClearButtonVisibility="WhileEditing"
-                    IsPassword="True"
-                    Keyboard="Plain"
-                    MaxLength="100">
-                </Entry>
+                <StackLayout>
+                    <Entry
+                        x:Name="entryEmail"
+                        Grid.Row="1"
+                        MinimumHeightRequest="44"
+                        MinimumWidthRequest="263"
+                        FontSize="20"
+                        VerticalOptions="End"
+                        Placeholder="Введите почту"
+                        Keyboard="Email"
+                        ClearButtonVisibility="WhileEditing"
+                        MaxLength="100"
+                        AbsoluteLayout.LayoutBounds="55, 100, Autosize, Autosize">
+                    </Entry>
+
+                    <Label
+                        x:Name="signalLabelEmail"
+                        Text="Поле почты пустое!"
+                        Margin="5,0,0,10"
+                        TextColor="Red"
+                        FontSize="15"
+                        IsVisible="False">
+
+                    </Label>
+                </StackLayout>
+
+                <StackLayout
+                    Spacing="5">
+                    <Entry
+                        x:Name="entryPassword"
+                        Grid.Row="2"
+                        FontSize="20"
+                        MinimumHeightRequest="44"
+                        MinimumWidthRequest="263"
+                        VerticalOptions="End"
+                        Placeholder="Введите пароль"
+                        ClearButtonVisibility="WhileEditing"
+                        IsPassword="True"
+                        Keyboard="Plain"
+                        MaxLength="100">
+                    </Entry>
+
+                    <Label
+                        x:Name="signalLabelPassword"
+                        Text="Поле пароля пустое!"
+                        Margin="5,0,0,10"
+                        TextColor="Red"
+                        FontSize="15"
+                        IsVisible="False">
+
+                    </Label>
+                </StackLayout>
 
                 <HorizontalStackLayout
                     Grid.Row="3"
