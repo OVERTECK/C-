@@ -31,14 +31,16 @@
                    TextChanged="Entry_TextChanged"
                    WidthRequest="300"></Entry>
         </HorizontalStackLayout>
-        
+
         <CollectionView x:Name="collectionView"
                         Grid.Row="1"
                         SelectionMode="Multiple"
                         EmptyView="Товары не найдены."
                         Loaded="collectionView_Loaded"
+                        
                         >
             <CollectionView.ItemsLayout>
+
                 <GridItemsLayout
                     VerticalItemSpacing="10"
                     HorizontalItemSpacing="10"
@@ -74,8 +76,10 @@
             Spacing="20"
             Padding="30"
             HorizontalOptions="Center">
-            <Button Text="Добавить"></Button>
-            <Button Text="Удалить"></Button>
+            <Button Text="Добавить"
+                    Clicked="Button_Clicked"></Button>
+            <Button Text="Удалить"
+                    Clicked="Button_Clicked_1"></Button>
         </HorizontalStackLayout>
     </Grid>
 </ContentPage>

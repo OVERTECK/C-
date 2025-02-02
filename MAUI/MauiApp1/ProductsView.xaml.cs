@@ -1,9 +1,5 @@
 using MauiApp1.Entities;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace MauiApp1;
 
@@ -18,7 +14,7 @@ public partial class ProductsView : ContentPage
         GetCategories();
     }
 
-    public List<Product> GetProducts()
+    public static List<Product> GetProducts()
     {
         using (var client = new HttpClient())
         {
@@ -46,7 +42,7 @@ public partial class ProductsView : ContentPage
         }
     }
 
-    public List<Category> GetCategories()
+    public static List<Category> GetCategories()
     {
         using (var httpClient = new HttpClient())
         {
@@ -116,5 +112,28 @@ public partial class ProductsView : ContentPage
         var products = GetProducts().Where(c => c.Title.ToLower().Contains(textSearch)).ToList();
 
         collectionView.ItemsSource = products;
+    }
+
+    private async void Button_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new AddingProduct());
+    }
+
+    private void Button_Clicked_1(object sender, EventArgs e)
+    {
+        var selectedProducts = collectionView.SelectedItems.ToList();
+
+        using (var httpClient = new HttpClient())
+        {
+            foreach (Product product in selectedProducts)
+            {
+                var url = "https://localhost:7166/products/" + product.Idproduct;
+
+                httpClient.DeleteAsync(url);
+
+                Thread.Sleep(100);
+            }
+        }
+        collectionView.ItemsSource = GetProducts();
     }
 }

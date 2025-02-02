@@ -22,6 +22,49 @@
 
                 <StackLayout>
                     <Entry
+                        x:Name="entryLogin"
+                        MinimumHeightRequest="44"
+                        MinimumWidthRequest="263"
+                        FontSize="20"
+                        VerticalOptions="End"
+                        Placeholder="Введите логин"
+                        TextChanged="entryLogin_TextChanged"
+                        Keyboard="Plain"
+                        ClearButtonVisibility="WhileEditing"
+                        MaxLength="100"
+                        AbsoluteLayout.LayoutBounds="55, 100, Autosize, Autosize">
+                    </Entry>
+
+                    <Label
+                        x:Name="signalLabelLogin"
+                        Text="Поле логина пустое!"
+                        Margin="5,0,0,10"
+                        TextColor="Red"
+                        FontSize="15"
+                        IsVisible="False">
+                    </Label>
+
+                    <Label
+                        x:Name="signalLoginBusy"
+                        Text="Данный логин занят!"
+                        Margin="5,0,0,10"
+                        TextColor="Red"
+                        FontSize="15"
+                        IsVisible="False">
+                    </Label>
+
+                    <Label
+                        x:Name="signalLoginAccess"
+                        Text="Логин доступен!"
+                        Margin="5,0,0,10"
+                        TextColor="Green"
+                        FontSize="15"
+                        IsVisible="False">
+                    </Label>
+                </StackLayout>
+
+                <StackLayout>
+                    <Entry
                         x:Name="entryEmail"
                         Grid.Row="1"
                         MinimumHeightRequest="44"
@@ -42,9 +85,7 @@
                         TextColor="Red"
                         FontSize="15"
                         IsVisible="False">
-
                     </Label>
-                    
                 </StackLayout>
 
                 <StackLayout>
