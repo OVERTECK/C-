@@ -2,7 +2,15 @@
 
 ###
 
+GET https://localhost:7166/categories
+
+###
+
 GET https://localhost:7166/users/11
+
+###
+
+GET https://localhost:7166/users
 
 ###
 
@@ -34,3 +42,28 @@ DELETE https://localhost:7166/users/delete/117
 
 ###
 
+POST https://localhost:7166/users
+content-type: application/json
+
+{
+  "login": "newUser",
+  "password": "123456",
+  "email": "754.com"
+}
+
+###
+
+POST https://localhost:7166/products
+content-type: application/json
+
+{
+  "title": "product",
+  "categoriesId": "6",
+  "image": "1424"
+}
+
+###
+
+DELETE https://localhost:7166/products/88
+
+###

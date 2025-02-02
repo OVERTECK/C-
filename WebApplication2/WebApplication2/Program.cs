@@ -13,15 +13,19 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapGet("/users", () => Db1Context.GetContext().Users);
-
 app.MapPost("/register", (User newUser) =>
 {
-    var searchUser = Db1Context.GetContext().Users.FirstOrDefault(c => c.Email == newUser.Email);
+    var searchUserByEmail = Db1Context.GetContext().Users.FirstOrDefault(c => c.Email == newUser.Email);
+    var searchUserByLogin = Db1Context.GetContext().Users.FirstOrDefault(c => c.Login == newUser.Login);
 
-    if (searchUser != null)
+    if (searchUserByEmail != null)
     {
-        return Results.BadRequest();
+        return Results.BadRequest("Почта занята!");
+    };
+
+    if (searchUserByLogin != null)
+    {
+        return Results.BadRequest("Логин занят!");
     }
 
     newUser.Password = Hash.createHash(newUser.Password);
@@ -33,61 +37,62 @@ app.MapPost("/register", (User newUser) =>
     return Results.Ok();
 });
 
-app.MapPost("/login", (HttpContext httpContext) =>
+app.MapPost("/login", (User user) =>
 {
-    var user = httpContext.Request.ReadFromJsonAsync<User>().Result;
+    var seachedUserByEmail = Db1Context.GetContext()
+        .Users
+        .SingleOrDefault(c => c.Email == user.Email
+    );
 
-    if (user == null)
+    if (seachedUserByEmail == null)
     {
-        return (IResult)TypedResults.NotFound();
+        return Results.NotFound("Почта не найдена.");
     }
-
-    var email = user.Email;
-
-    var password = user.Password;
 
     var seachedUser = Db1Context.GetContext()
         .Users
         .SingleOrDefault(c => c.Email == user.Email && c.Password == user.Password
     );
 
-    if (seachedUser != null)
-        return TypedResults.Ok();
-    else
-        return TypedResults.NotFound();
-});
+    if (seachedUser == null)
+    {
+        return Results.NotFound("Пароль не верный!");
+    }
 
-app.MapGet("/users/{id}", (int id) =>
-{
-    var searchedUser = Db1Context.GetContext()
-    .Users
-    .SingleOrDefault(c => c.IdUser == id);
-
-    return searchedUser;
-});
-
-app.MapPost("users/create", (User newUser) =>
-{
-    //if (Db1Context.GetContext().Users.FirstOrDefault(c => c.Email == newUser.Email) != null)
-    //    return TypedResults.BadRequest();
-
-    Db1Context.GetContext().Users.Add(newUser);
-
-    Db1Context.GetContext().SaveChanges();
-
-    return TypedResults.Created($"users/{newUser.IdUser}", newUser);
-});
-
-app.MapDelete("users/delete/{idUser}", (int idUser) =>
-{
-    Db1Context.GetContext().Users.Where(c => idUser == c.IdUser).ExecuteDelete();
-
-    return TypedResults.Ok();
+    return Results.Ok();
 });
 
 app.MapGet("products/", () =>
 {
     return Results.Ok(Db1Context.GetContext().Products);
+});
+
+app.MapGet("users/{login}", (string login) =>
+{
+    var searchedUser = Db1Context.GetContext().Users.FirstOrDefault(c => c.Login == login);
+
+    if (searchedUser != null)
+    {
+        return Results.Ok("Логин занят!");
+    }
+
+    return Results.NotFound();
+});
+
+app.MapPost("products/", (Product product) =>
+{
+    Db1Context.GetContext().Products.Add(product);
+
+    Db1Context.GetContext().SaveChanges();
+
+    return Results.Created();
+});
+
+app.MapDelete("products/{idProduct}", (int idProduct) =>
+{
+    Db1Context.GetContext().Products.Where(c => idProduct == c.Idproduct).ExecuteDelete();
+
+    return TypedResults.Ok();
 });
 
 app.MapGet("categories/", () =>
