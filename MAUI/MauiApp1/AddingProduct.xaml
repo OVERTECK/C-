@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.AddingProduct"
+             Title="Добавление продукта"
+             >
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <VerticalStackLayout
+            Grid.Row="1"
+            Spacing="30"
+            Padding="30">
+
+            <VerticalStackLayout>
+                <Picker
+                    Title="Категория"
+                    x:Name="pickerAddingProduct"
+                    Loaded="pickerAddingProduct_Loaded">
+                </Picker>
+
+                <Label
+                    TextColor="Red"
+                    Text="Выберите категорию!"
+                    x:Name="signalLabelCateg"
+                    Margin="10,5,0,0"
+                    IsVisible="False">
+
+                </Label>
+                
+            </VerticalStackLayout>
+            
+
+            <VerticalStackLayout>
+                <Entry Placeholder="Введите название продукта"
+                       x:Name="entryNameProduct"></Entry>
+
+                <Label
+                    TextColor="Red"
+                    Text="Введите название продукта!"
+                    x:Name="signalLabelName"
+                    Margin="10,5,0,0"
+                    IsVisible="False">
+
+                </Label>
+            </VerticalStackLayout>
+            
+
+            <VerticalStackLayout
+                Spacing="10">
+
+                <HorizontalStackLayout
+                    Spacing="10">
+                    <Label>
+                        Выбраное изображение: 
+                    </Label>
+
+                    <Label
+                        x:Name="labelNameImage">
+                        
+                    </Label>
+                    
+                </HorizontalStackLayout>
+                
+
+                <Button
+                    Text="Выбрать изображение"
+                    HorizontalOptions="Start"
+                    Clicked="Button_Clicked"></Button>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <Button
+            FontSize="Medium"
+            CharacterSpacing="2"
+            Clicked="Button_Clicked_1"
+            Grid.Row="2"
+            Text="Добавить"
+            Margin="30">
+        </Button>
+    </Grid>
+</ContentPage>
