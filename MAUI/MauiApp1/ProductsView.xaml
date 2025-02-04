@@ -2,26 +2,71 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiApp1.ProductsView"
-             Title="">
+             SizeChanged="ContentPage_SizeChanged"
+             x:Name="page"
+             xmlns:local="clr-namespace:ImageDataTemplateSelector">
+    <!--<ContentPage.Resources>
+        
+        <DataTemplate x:Key="imagePathTemplate">
+            <Border
+                Padding="10"
+                WidthRequest="{OnIdiom Desktop=200, Phone=160}"
+                HeightRequest="{OnIdiom Phone=200, Desktop=200}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"></RoundRectangle>
+                </Border.StrokeShape>
+                <StackLayout
+                    Spacing="10">
+                    <Image Source="{Binding TitlePath}"
+                        HeightRequest="100"
+                        WidthRequest="100"></Image>
+                    <Label Text="{Binding Title}"></Label>
+                </StackLayout>
+            </Border>
+        </DataTemplate>
 
+        <DataTemplate x:Key="imageTemplate">
+            <Border
+                Padding="10"
+                WidthRequest="{OnIdiom Desktop=200, Phone=160}"
+                HeightRequest="{OnIdiom Phone=200, Desktop=200}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10"></RoundRectangle>
+                </Border.StrokeShape>
+                <StackLayout
+                            Spacing="10">
+                    <Image Source="{Binding Image}"
+                        HeightRequest="100"
+                        WidthRequest="100">
+                    </Image>
+                    <Label Text="{Binding Title}"></Label>
+                </StackLayout>
+            </Border>
+        </DataTemplate>
+
+        <local:ImageDataTemplateSelector
+            x:Key="imageDataTemplateSelector"
+            ImagePathTemplate="{StaticResource imagePathTemplate}"
+            ImageTemplate="{StaticResource imageTemplate}">
+        </local:ImageDataTemplateSelector>
+    </ContentPage.Resources>-->
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height=".2*"></RowDefinition>
             <RowDefinition
                 ></RowDefinition>
-            <RowDefinition Height=".3*"></RowDefinition>
+            <RowDefinition Height="{OnIdiom Desktop=.3*, Phone=.2*}"></RowDefinition>
         </Grid.RowDefinitions>
 
         <HorizontalStackLayout
             Grid.Row="0"
             Padding="10"
             HorizontalOptions="Center"
-            Spacing="20">
-            <Label
-                VerticalOptions="Center">
-                Категория:
-            </Label>
+            Spacing="20"
+            VerticalOptions="Start">
             <Picker
+                VerticalTextAlignment="Center"
                 x:Name="categoriesPicker"
                 SelectedIndexChanged="categoriesPicker_SelectedIndexChanged"
                 Loaded="categoriesPicker_Loaded">
@@ -29,24 +74,22 @@
             <Entry Placeholder="Поиск"
                    x:Name="search"
                    TextChanged="Entry_TextChanged"
-                   WidthRequest="300"></Entry>
+                   WidthRequest="{OnIdiom Desktop=300, Phone=200}"></Entry>
         </HorizontalStackLayout>
 
         <CollectionView x:Name="collectionView"
                         Grid.Row="1"
                         SelectionMode="Multiple"
                         EmptyView="Товары не найдены."
-                        Loaded="collectionView_Loaded"
-                        
-                        >
+                        Loaded="collectionView_Loaded">
             <CollectionView.ItemsLayout>
 
                 <GridItemsLayout
+                    x:Name="gridLayout"
                     VerticalItemSpacing="10"
-                    HorizontalItemSpacing="10"
+                    HorizontalItemSpacing="5"
                     Orientation="Vertical"
                     Span="5">
-
                 </GridItemsLayout>
             </CollectionView.ItemsLayout>
 
@@ -54,16 +97,17 @@
                 <DataTemplate>
                     <Border
                         Padding="10"
-                        Margin="20"
-                        WidthRequest="200">
+                        WidthRequest="{OnIdiom Desktop=200, Phone=160}"
+                        HeightRequest="{OnIdiom Phone=200, Desktop=200}">
                         <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="20"></RoundRectangle>
+                            <RoundRectangle CornerRadius="10"></RoundRectangle>
                         </Border.StrokeShape>
-                        <StackLayout>
-                            <Image Source="{Binding TitlePath}"
-                                   HeightRequest="100"
-                                   WidthRequest="100"
-                                   ></Image>
+                        <StackLayout
+                            Spacing="10">
+                            <Image Source="{Binding Image}"
+                                HeightRequest="100"
+                                WidthRequest="100">
+                            </Image>
                             <Label Text="{Binding Title}"></Label>
                         </StackLayout>
                     </Border>
@@ -71,15 +115,32 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
+        <Border
+            Grid.Row="2"
+            StrokeThickness="1">
+        </Border>
+
+        <Button
+            Text="Экспорт данных"
+            IsVisible="{OnIdiom Desktop=true, Phone=false}"
+            Grid.Row="2"
+            Margin="{OnPlatform WinUI=30, Android=10}"
+            Clicked="Button_Clicked_2"
+            HorizontalOptions="End">
+        </Button>
+
         <HorizontalStackLayout
             Grid.Row="2"
-            Spacing="20"
-            Padding="30"
-            HorizontalOptions="Center">
+            Spacing="{OnPlatform WinUI=20, Android=10}"
+            Padding="{OnPlatform WinUI=30, Android=10}"
+            HorizontalOptions="{OnPlatform WinUI=Center, Android=Fill}">
             <Button Text="Добавить"
-                    Clicked="Button_Clicked"></Button>
+                    Clicked="Button_Clicked"
+                    HorizontalOptions="Center"></Button>
             <Button Text="Удалить"
-                    Clicked="Button_Clicked_1"></Button>
+                    Clicked="Button_Clicked_1"
+                    HorizontalOptions="Center"></Button>
         </HorizontalStackLayout>
+
     </Grid>
 </ContentPage>

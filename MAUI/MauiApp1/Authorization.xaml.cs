@@ -1,3 +1,4 @@
+using MauiApp1.Entities;
 using Microsoft.Maui.ApplicationModel.Communication;
 using Microsoft.Maui.Controls.PlatformConfiguration.TizenSpecific;
 using Newtonsoft.Json;
@@ -16,50 +17,46 @@ public partial class Authorization : ContentPage
 
     private void ClickedRegistration(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new Regisration());
+        Navigation.PushAsync(Regisration.GetContext());
     }
 
     private void OnCounterClicked(object sender, EventArgs e)
     {
-        Navigation.PushAsync(new ProductsView());
+        var emailField = entryEmail.Text;
+        var passwordField = entryPassword.Text;
 
+        signalLabelEmail.IsVisible = string.IsNullOrWhiteSpace(emailField)
+            ? true : false;
 
-        //var emailField = entryEmail.Text;
-        //var passwordField = entryPassword.Text;
+        signalLabelPassword.IsVisible = string.IsNullOrEmpty(passwordField)
+            ? true : false;
 
-        //signalLabelEmail.IsVisible = string.IsNullOrEmpty(emailField)
-        //    ? true : false;
+        if (string.IsNullOrWhiteSpace(emailField) || string.IsNullOrEmpty(passwordField))
+            return;
 
-        //signalLabelPassword.IsVisible = string.IsNullOrEmpty(passwordField)
-        //    ? true : false;
+        var user = new User
+        {
+            Email = emailField,
+            Password = Hash.createHash(passwordField)
+        };
 
-        //if (signalLabelEmail.IsVisible || signalLabelPassword.IsVisible)
-        //    return;
+        var userJson = JsonConvert.SerializeObject(user);
 
-        //var user = new
-        //{
-        //    email = emailField,
-        //    password = Hash.createHash(passwordField)
-        //};
+        using (HttpClient httpClient = new HttpClient())
+        {
+            var httpContent = new StringContent(userJson, Encoding.UTF8, "application/json");
 
-        //var userJson = JsonConvert.SerializeObject(user);
+            var response = httpClient.PostAsync("https://4cbcncpt-7166.euw.devtunnels.ms/login", httpContent).Result;
 
-        //using (HttpClient httpClient = new HttpClient())
-        //{
-        //    var httpContent = new StringContent(userJson, Encoding.UTF8, "application/json");
-
-        //    var response = await httpClient.PostAsync("https://localhost:7166/login", httpContent);
-
-        //    if (response.IsSuccessStatusCode)
-        //    {
-
-        //        await Navigation.PushAsync(new ProductsView());
-        //    }
-        //    else
-        //    {
-        //        await DisplayAlert("Ошибка", "Почта или пароль не верные", "Ок");
-        //    }
-        //}
+            if (response.IsSuccessStatusCode)
+            {
+                Navigation.PushAsync(new ProductsView());
+            }
+            else
+            {
+                DisplayAlert("Ошибка", response.Content.ReadAsStringAsync().Result, "Ок");
+            }
+        }
     }
 
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)

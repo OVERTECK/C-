@@ -1,7 +1,9 @@
+using DocumentFormat.OpenXml.Wordprocessing;
 using MauiApp1.Entities;
 using Newtonsoft.Json;
 using System.Buffers.Text;
 using System.Text;
+using Microsoft.Maui.Media;
 
 namespace MauiApp1;
 
@@ -14,21 +16,17 @@ public partial class AddingProduct : ContentPage
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
-		var resultPicker = await FilePicker.Default.PickAsync(new PickOptions
-		{
-			PickerTitle = "Выберите изображение",
-			FileTypes = FilePickerFileType.Images
-		});
+		var resultPicker = await MediaPicker.Default.PickPhotoAsync();
 
 		if (resultPicker != null)
 		{
-			labelNameImage.Text = resultPicker.FullPath;
-		}
-    }
+            labelNameImage.Text = resultPicker.FullPath;
+        }
+	}
 
     private void Button_Clicked_1(object sender, EventArgs e)
     {
-		var categoriesTitle = pickerAddingProduct.SelectedItem.ToString();
+		var categoriesTitle = pickerAddingProduct.SelectedItem;
 		var productTitle = entryNameProduct.Text;
 		var imagePath = labelNameImage.Text;
 
@@ -63,13 +61,14 @@ public partial class AddingProduct : ContentPage
 		else
 		{
 			bytesImage = File.ReadAllBytes(imagePath);
+			imagePath = null;
         }
 
 		var categories = ProductsView.GetCategories();
 
-		var categoryId = categories.FirstOrDefault(c => c.Title == categoriesTitle).Id;
+		var categoryId = categories.FirstOrDefault(c => c.Title == categoriesTitle.ToString()).Id;
 
-        var newUser = new Product
+		var newUser = new Product
 		{
 			Title = productTitle,
 			CategoriesId = categoryId,
@@ -81,9 +80,9 @@ public partial class AddingProduct : ContentPage
 
 		using (var httpClient = new HttpClient())
 		{
-			var httpMessage = new StringContent(serializeUser, Encoding.UTF8, "application/json");
+			var stringContent = new StringContent(serializeUser, Encoding.UTF8, "application/json");
 
-			var response = httpClient.PostAsync("https://localhost:7166/products", httpMessage).Result;
+			var response = httpClient.PostAsync("https://4cbcncpt-7166.euw.devtunnels.ms/products", stringContent).Result;
 
 			if (!response.IsSuccessStatusCode)
 			{
