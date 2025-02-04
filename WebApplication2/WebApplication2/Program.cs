@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http.HttpResults;
+п»їusing Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2;
 using WebApplication2.Entities;
@@ -20,12 +20,12 @@ app.MapPost("/register", (User newUser) =>
 
     if (searchUserByEmail != null)
     {
-        return Results.BadRequest("Почта занята!");
+        return Results.BadRequest("РџРѕС‡С‚Р° Р·Р°РЅСЏС‚Р°!");
     };
 
     if (searchUserByLogin != null)
     {
-        return Results.BadRequest("Логин занят!");
+        return Results.BadRequest("Р›РѕРіРёРЅ Р·Р°РЅСЏС‚!");
     }
 
     newUser.Password = Hash.createHash(newUser.Password);
@@ -46,7 +46,7 @@ app.MapPost("/login", (User user) =>
 
     if (seachedUserByEmail == null)
     {
-        return Results.NotFound("Почта не найдена.");
+        return Results.NotFound("РџРѕС‡С‚Р° РЅРµ РЅР°Р№РґРµРЅР°.");
     }
 
     var seachedUser = Db1Context.GetContext()
@@ -56,7 +56,7 @@ app.MapPost("/login", (User user) =>
 
     if (seachedUser == null)
     {
-        return Results.NotFound("Пароль не верный!");
+        return Results.NotFound("РџР°СЂРѕР»СЊ РЅРµ РІРµСЂРЅС‹Р№!");
     }
 
     return Results.Ok();
@@ -73,7 +73,7 @@ app.MapGet("users/{login}", (string login) =>
 
     if (searchedUser != null)
     {
-        return Results.Ok("Логин занят!");
+        return Results.Ok("Р›РѕРіРёРЅ Р·Р°РЅСЏС‚!");
     }
 
     return Results.NotFound();
