@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MauiApp1.Entities;
+namespace Entities;
 
 public partial class User
 {

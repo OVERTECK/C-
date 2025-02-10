@@ -1,4 +1,4 @@
-using MauiApp1.Entities;
+using Entities;
 using Newtonsoft.Json;
 using System.Text;
 using System.Net;

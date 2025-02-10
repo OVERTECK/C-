@@ -1,4 +1,4 @@
-using MauiApp1.Entities;
+using Entities;
 using Microsoft.Maui.ApplicationModel.Communication;
 using Microsoft.Maui.Controls.PlatformConfiguration.TizenSpecific;
 using Newtonsoft.Json;

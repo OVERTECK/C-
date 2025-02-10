@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.ProductsView"
+             SizeChanged="ContentPage_SizeChanged"
+             x:Name="page"
+             MinimumWidthRequest="287">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="6*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid
+            Padding="20,10,20,10"
+            ColumnSpacing="15"
+            ColumnDefinitions="Auto, 3*">
+            <Picker
+                Grid.Column="0"
+                x:Name="categoriesPicker"
+                SelectedIndexChanged="categoriesPicker_SelectedIndexChanged"
+                Loaded="categoriesPicker_Loaded">
+            </Picker>
+
+            <Entry Placeholder="Поиск"
+                VerticalTextAlignment="Center"
+                Grid.Column="1"
+                x:Name="search"
+                HorizontalOptions="Fill"
+                TextChanged="Entry_TextChanged"></Entry>
+        </Grid>
+        
+        
+        <CollectionView x:Name="collectionView"
+            Grid.Row="1"
+            SelectionMode="Multiple"
+            EmptyView="Товары не найдены."
+            Loaded="collectionView_Loaded">
+            <CollectionView.ItemsLayout>
+
+                <GridItemsLayout
+                    x:Name="gridLayout"
+                    VerticalItemSpacing="10"
+                    HorizontalItemSpacing="5"
+                    Orientation="Vertical"
+                    Span="5">
+                </GridItemsLayout>
+                
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Padding="10"
+                        WidthRequest="{OnIdiom Desktop=200, Phone=160}"
+                        HeightRequest="{OnIdiom Phone=200, Desktop=200}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"></RoundRectangle>
+                        </Border.StrokeShape>
+                        <StackLayout
+                            Spacing="10">
+                            <Image Source="{Binding Image}"
+                                HeightRequest="100"
+                                WidthRequest="100">
+                            </Image>
+                            
+                            <Label Text="{Binding Title}"></Label>
+                        </StackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Border
+            Grid.Row="2"
+            StrokeThickness="1">
+        </Border>
+
+        <!--<Button
+            Text="Экспорт данных"
+            IsVisible="{OnIdiom Desktop=true, Phone=false}"
+            Grid.Row="2"
+            Margin="{OnPlatform WinUI=30, Android=10}"
+            Clicked="Button_Clicked_2"
+            HorizontalOptions="End">
+        </Button>-->
+
+        <Grid
+            ColumnDefinitions="*,*"
+            Grid.Row="2"
+            ColumnSpacing="20"
+            Padding="15">
+            
+            <Button Text="Добавить"
+                    Grid.Column="0"
+                Clicked="Button_Clicked"></Button>
+            
+            <Button Text="Удалить"
+                    Grid.Column="1"
+                Clicked="Button_Clicked_1"></Button>
+            
+        </Grid>
+
+    </Grid>
+</ContentPage>

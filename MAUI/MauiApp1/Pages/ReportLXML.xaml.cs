@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ClosedXML.Excel;
+using Lib;
 
 namespace MauiApp1;
 
@@ -49,7 +50,7 @@ public partial class ReportLXML : ContentPage
 
             var sh = wb.Worksheets.Add("Products");
 
-            var searchedProducts = ProductsView.GetProducts();
+            var searchedProducts = await WebAPI.GetProducts();
 
             int index = 1;
 
@@ -67,7 +68,7 @@ public partial class ReportLXML : ContentPage
 
             await DisplayAlert("Статус", "Данные успешно экспортированны.", "Ок");
 
-            Navigation.PopAsync();
+            await Navigation.PopAsync();
 
         } catch (Exception ex)
         {

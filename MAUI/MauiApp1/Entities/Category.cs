@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
-namespace MauiApp1.Entities;
+namespace Entities;
 
 public partial class Category
 {
@@ -10,6 +9,10 @@ public partial class Category
 
     public string Title { get; set; } = null!;
 
-    [JsonIgnore]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+
+    public override string ToString()
+    {
+        return Title;
+    }
 }

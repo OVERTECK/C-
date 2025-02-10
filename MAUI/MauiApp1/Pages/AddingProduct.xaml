@@ -5,19 +5,20 @@
              Title="Добавление продукта"
              >
     <Grid>
-
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="3*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <VerticalStackLayout
-            Grid.Row="1"
-            Spacing="30"
-            Padding="30">
+        <Grid
+            VerticalOptions="Center"
+            RowDefinitions="Auto, Auto, Auto"
+            Grid.Row="0"
+            RowSpacing="20"
+            Padding="10">
 
-            <VerticalStackLayout>
+            <VerticalStackLayout
+                Grid.Row="0">
                 <Picker
                     Title="Категория"
                     x:Name="pickerAddingProduct"
@@ -36,7 +37,8 @@
             </VerticalStackLayout>
             
 
-            <VerticalStackLayout>
+            <VerticalStackLayout
+                Grid.Row="1">
                 <Entry Placeholder="Введите название продукта"
                        x:Name="entryNameProduct"></Entry>
 
@@ -52,6 +54,7 @@
             
 
             <VerticalStackLayout
+                Grid.Row="2"
                 Spacing="10">
 
                 <HorizontalStackLayout
@@ -73,7 +76,7 @@
                     HorizontalOptions="Start"
                     Clicked="Button_Clicked"></Button>
             </VerticalStackLayout>
-        </VerticalStackLayout>
+        </Grid>
 
         <Button
             FontSize="Medium"
@@ -81,7 +84,7 @@
             Clicked="Button_Clicked_1"
             Grid.Row="2"
             Text="Добавить"
-            Margin="30">
+            Margin="10">
         </Button>
     </Grid>
 </ContentPage>
