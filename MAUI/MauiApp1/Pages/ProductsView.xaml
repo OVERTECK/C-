@@ -60,7 +60,7 @@
                         </Border.StrokeShape>
                         <StackLayout
                             Spacing="10">
-                            <Image Source="{Binding Image}"
+                            <Image Source="{Binding ImageSource}"
                                 HeightRequest="100"
                                 WidthRequest="100">
                             </Image>

@@ -51,19 +51,17 @@ public partial class AddingProduct : ContentPage
             signalLabelCateg.IsVisible = false;
         }
 
-		if ()
-
-		var byteImage = ; 
-
-        var newProduct = new
+		var newProduct = new Product
         {
-            Title = productTitle,
-            CategoriesId = selectedCategory.Id,
-            Image = imagePath ?? File.ReadAllBytes(imagePath)
+			Title = productTitle,
+			CategoriesId = selectedCategory.Id
         };
 
-        var categories = await WebAPI.GetCategories();
-
+        if (imagePath != null)
+		{
+			newProduct.Image = File.ReadAllBytes(imagePath);
+		}
+		
         var serializeProduct = JsonConvert.SerializeObject(newProduct);
 
 		var httpClient = new HttpClient();

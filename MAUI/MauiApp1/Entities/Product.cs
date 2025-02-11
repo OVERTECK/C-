@@ -15,5 +15,7 @@ public partial class Product
 
     public byte[]? Image { get; set; }
 
+    public ImageSource ImageSource { get; set; } = null!;
+
     public virtual Category Categories { get; set; } = null!;
 }

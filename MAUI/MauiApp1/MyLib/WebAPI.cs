@@ -6,33 +6,65 @@ namespace Lib
 {
     public class WebAPI
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="HttpRequestException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public async static Task<List<Product>> GetProducts()
         {
-            using var client = new HttpClient();
+            var httpClient = new HttpClient();
 
-            var response = await client.GetAsync($"{Lib.BaseAddress.Current}/products");
+            var response = await httpClient.GetAsync($"{Lib.BaseAddress.Current}/products");
 
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
+                throw new HttpRequestException("Ошибка запроса.");
+
+            var products = await response.Content.ReadFromJsonAsync<List<Product>>();
+
+            if (products == null)
+                throw new ArgumentException("Ошибка конвертации продуктов.");
+
+            List<Category> categories = await GetCategories();
+
+            // Связываем поле Categories с классом Category
+            foreach (var product in products)
             {
-                var products = await response.Content.ReadFromJsonAsync<List<Product>>();
+                var searchedCategory = categories.FirstOrDefault(c => c.Id == product.CategoriesId);
 
-                List<Category> categories = await GetCategories();
+                if (searchedCategory != null)
+                    product.Categories = searchedCategory;
+                else
+                    throw new ArgumentException($"Категория, с id: {product.CategoriesId}, не найдена.");
+            }
 
-                if (products != null)
+            // Преобразуем массив байтов или путь к изображение в ItemSource
+            foreach (var product in products)
+            {
+                if (product.Image != null)
                 {
-                    foreach (var product in products)
-                    {
-                        var searchedCategory = categories.FirstOrDefault(c => c.Id == product.CategoriesId);
+                    var stream = new MemoryStream(product.Image);
 
-                        if (searchedCategory != null)
-                            product.Categories = searchedCategory;
-                        else
-                            throw new ArgumentException();
-                    }
-                    return products;
+                    var imageSource = ImageSource.FromStream(() => stream);
+
+                    product.ImageSource = imageSource;
+                }
+                else if (product.TitlePath != null)
+                {
+                    var imageSource = ImageSource.FromFile(product.TitlePath);
+
+                    product.ImageSource = imageSource;
+                }
+                else
+                {
+                    var imageSource = ImageSource.FromFile("no_images.png");
+
+                    product.ImageSource = imageSource;
                 }
             }
-            throw new HttpRequestException();
+
+            return products;
         }
 
         /// <summary>
@@ -50,7 +82,7 @@ namespace Lib
             {
                 var categories = await response.Content.ReadFromJsonAsync<List<Category>>();
 
-                return categories ?? throw new HttpRequestException();
+                return categories ?? throw new HttpRequestException("Ошибка преобразования категорий.");
             }
             else
             {

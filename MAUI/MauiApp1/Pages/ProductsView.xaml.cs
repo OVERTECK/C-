@@ -14,23 +14,31 @@ public partial class ProductsView : ContentPage
 
     private async void categoriesPicker_SelectedIndexChanged(object sender, EventArgs e)
     {
-        var selectedCategory = categoriesPicker.SelectedItem as Category;
-
-        if (selectedCategory == null)
-            return;
-
-        if (selectedCategory.Id == -1)
+        try
         {
-            collectionView.ItemsSource = await WebAPI.GetProducts();
+            var selectedCategory = categoriesPicker.SelectedItem as Category;
 
-            return;
+            if (selectedCategory == null)
+                return;
+
+            if (selectedCategory.Id == -1)
+            {
+                collectionView.ItemsSource = await WebAPI.GetProducts();
+
+                return;
+            }
+
+            var products = await WebAPI.GetProducts();
+
+            var filteredProducts = products.Where(c => c.Categories.Id == selectedCategory.Id);
+
+            collectionView.ItemsSource = filteredProducts;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ошибка", ex.Message, "Ок");
         }
 
-        var products = await WebAPI.GetProducts();
-
-        var filteredProducts = products.Where(c => c.Categories.Id == selectedCategory.Id);
-
-        collectionView.ItemsSource = filteredProducts;
     }
 
     private async void categoriesPicker_Loaded(object sender, EventArgs e)
@@ -45,52 +53,15 @@ public partial class ProductsView : ContentPage
 
             categoriesPicker.SelectedIndex = 0;
 
-        } catch (HttpRequestException)
+        } catch (Exception ex)
         {
-            await DisplayAlert("Ошибка", "Категории не получены.", "Ок");
+            await DisplayAlert("Ошибка", ex.Message, "Ок");
         }
     }
 
     private async void collectionView_Loaded(object sender, EventArgs e)
     {
-        var products = await WebAPI.GetProducts();
-
-        var imageSourceProducts = new List<object>();
-
-        foreach (var product in products)
-        {
-            if (product.Image != null)
-            {
-                var stream = new MemoryStream(product.Image);
-
-                var imageSource = ImageSource.FromStream(() => stream);
-
-                var newProduct = new
-                {
-                    IdProduct = product.Idproduct,
-                    Title = product.Title,
-                    CategoriesId = product.CategoriesId,
-                    Image = imageSource
-                };
-
-                imageSourceProducts.Add(newProduct);
-            }
-            else
-            {
-                var image = ImageSource.FromFile(product.TitlePath);
-
-                var newProduct = new
-                {
-                    IdProduct = product.Idproduct,
-                    Title = product.Title,
-                    CategoriesId = product.CategoriesId,
-                    Image = image
-                };
-
-                imageSourceProducts.Add(newProduct);
-            }
-        }
-        collectionView.ItemsSource = imageSourceProducts;
+        collectionView.ItemsSource = await WebAPI.GetProducts();
     }
 
     private async void Entry_TextChanged(object sender, TextChangedEventArgs e)
