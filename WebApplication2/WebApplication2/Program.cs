@@ -32,8 +32,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -59,7 +59,19 @@ app.MapPost("/register", (User newUser, Db1Context db) =>
 
     db.SaveChangesAsync();
 
-    return Results.Ok();
+    var claims = new List<Claim> { new Claim(ClaimTypes.Email , newUser.Email) };
+
+    var jwt = new JwtSecurityToken(
+        issuer: builder.Configuration["Jwt:Issuer"],
+        audience: builder.Configuration["Jwt:Audience"],
+        claims: claims,
+        expires: DateTime.UtcNow.Add(TimeSpan.FromHours(2)),
+        signingCredentials: new SigningCredentials(
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+            SecurityAlgorithms.HmacSha256)
+        );
+
+    return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
 });
 
 app.MapPost("/login", (User user, Db1Context db) =>
@@ -84,14 +96,14 @@ app.MapPost("/login", (User user, Db1Context db) =>
         issuer: builder.Configuration["Jwt:Issuer"],
         audience: builder.Configuration["Jwt:Audience"],
         claims: claims,
-        expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+        expires: DateTime.UtcNow.Add(TimeSpan.FromHours(2)),
         signingCredentials: new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
             SecurityAlgorithms.HmacSha256)
     );
 
 
-    return Results.Ok( new { Token = new JwtSecurityTokenHandler().WriteToken(jwt)} );
+    return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
 });
 
 app.MapGet("products/", [Authorize] async (Db1Context db) =>
@@ -113,7 +125,7 @@ app.MapGet("users/{login}", (string login, Db1Context db) =>
     return Results.NotFound();
 });
 
-app.MapPost("products/", async (Product product, Db1Context db) =>
+app.MapPost("products/", [Authorize] async (Product product, Db1Context db) =>
 {
     db.Products.Add(product);
 
@@ -122,34 +134,25 @@ app.MapPost("products/", async (Product product, Db1Context db) =>
     return Results.Created();
 });
 
-app.MapDelete("products/{idProduct}", async (int idProduct, Db1Context db) =>
+app.MapDelete("products/{idProduct}", [Authorize] async (int idProduct, Db1Context db) =>
 {
     await db.Products.Where(c => idProduct == c.Idproduct).ExecuteDeleteAsync();
 
     return TypedResults.Ok();
 });
 
-app.MapGet("products/{idProduct}", async (int idProduct, Db1Context db) =>
+app.MapGet("products/{idProduct}", [Authorize] async (int idProduct, Db1Context db) =>
 {
     var searchedProduct = await db.Products.FirstOrDefaultAsync(c => idProduct == c.Idproduct);
 
     return TypedResults.Ok(searchedProduct);
 });
 
-app.MapGet("categories/", async (ILogger<Program> logger, Db1Context db) =>
+app.MapGet("categories/", [Authorize] async (ILogger<Program> logger, Db1Context db) =>
 {
-    try
-    {
-        List<Category> categories = await db.Categories.ToListAsync();
+    List<Category> categories = await db.Categories.ToListAsync();
 
-        return Results.Ok(categories);
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "Ошибка при добавлении продукта");
-
-        return Results.StatusCode(500);
-    }
+    return Results.Ok(categories);
 });
 
 app.Run();
