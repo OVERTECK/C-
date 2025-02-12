@@ -1,22 +1,47 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using WebApplication2.Entities;
+using System.Text;
+using System.Security.Claims;
+using NuGet.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<Db1Context>();
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+            ValidateIssuerSigningKey = true,
+        };
+    });
 
 var app = builder.Build();
+
+app.UseAuthorization();
+app.UseAuthentication();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapPost("/register", (User newUser) =>
+app.MapPost("/register", (User newUser, Db1Context db) =>
 {
-    var searchUserByEmail = Db1Context.GetContext().Users.FirstOrDefault(c => c.Email == newUser.Email);
-    var searchUserByLogin = Db1Context.GetContext().Users.FirstOrDefault(c => c.Login == newUser.Login);
+    var searchUserByEmail = db.Users.FirstOrDefault(c => c.Email == newUser.Email);
+    var searchUserByLogin = db.Users.FirstOrDefault(c => c.Login == newUser.Login);
 
     if (searchUserByEmail != null)
     {
@@ -30,46 +55,55 @@ app.MapPost("/register", (User newUser) =>
 
     newUser.Password = Hash.createHash(newUser.Password);
 
-    Db1Context.GetContext().Users.Add(newUser);
+    db.Users.Add(newUser);
 
-    Db1Context.GetContext().SaveChangesAsync();
+    db.SaveChangesAsync();
 
     return Results.Ok();
 });
 
-app.MapPost("/login", (User user) =>
+app.MapPost("/login", (User user, Db1Context db) =>
 {
-    var seachedUserByEmail = Db1Context.GetContext()
-        .Users
-        .SingleOrDefault(c => c.Email == user.Email
-    );
+    var seachedUserByEmail = db.Users.SingleOrDefault(c => c.Email == user.Email);
 
     if (seachedUserByEmail == null)
     {
         return Results.NotFound("Почта не найдена.");
     }
 
-    var seachedUser = Db1Context.GetContext()
-        .Users
-        .SingleOrDefault(c => c.Email == user.Email && c.Password == user.Password
-    );
+    var seachedUser = db.Users.SingleOrDefault(c => c.Email == user.Email && c.Password == user.Password);
 
     if (seachedUser == null)
     {
-        return Results.NotFound("Пароль не верный!");
+        return Results.Unauthorized();
     }
 
-    return Results.Ok();
+    var claims = new List<Claim> { new Claim(ClaimTypes.Email, user.Email) };
+
+    var jwt = new JwtSecurityToken(
+        issuer: builder.Configuration["Jwt:Issuer"],
+        audience: builder.Configuration["Jwt:Audience"],
+        claims: claims,
+        expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+        signingCredentials: new SigningCredentials(
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+            SecurityAlgorithms.HmacSha256)
+    );
+
+
+    return Results.Ok( new { Token = new JwtSecurityTokenHandler().WriteToken(jwt)} );
 });
 
-app.MapGet("products/", () =>
+app.MapGet("products/", [Authorize] async (Db1Context db) =>
 {
-    return Results.Ok(Db1Context.GetContext().Products);
+        var products = await db.Products.ToListAsync();
+
+        return Results.Ok(products);
 });
 
-app.MapGet("users/{login}", (string login) =>
+app.MapGet("users/{login}", (string login, Db1Context db) =>
 {
-    var searchedUser = Db1Context.GetContext().Users.FirstOrDefault(c => c.Login == login);
+    var searchedUser = db.Users.FirstOrDefault(c => c.Login == login);
 
     if (searchedUser != null)
     {
@@ -79,25 +113,43 @@ app.MapGet("users/{login}", (string login) =>
     return Results.NotFound();
 });
 
-app.MapPost("products/", (Product product) =>
+app.MapPost("products/", async (Product product, Db1Context db) =>
 {
-    Db1Context.GetContext().Products.Add(product);
+    db.Products.Add(product);
 
-    Db1Context.GetContext().SaveChanges();
+    await db.SaveChangesAsync();
 
     return Results.Created();
 });
 
-app.MapDelete("products/{idProduct}", (int idProduct) =>
+app.MapDelete("products/{idProduct}", async (int idProduct, Db1Context db) =>
 {
-    Db1Context.GetContext().Products.Where(c => idProduct == c.Idproduct).ExecuteDelete();
+    await db.Products.Where(c => idProduct == c.Idproduct).ExecuteDeleteAsync();
 
     return TypedResults.Ok();
 });
 
-app.MapGet("categories/", () =>
+app.MapGet("products/{idProduct}", async (int idProduct, Db1Context db) =>
 {
-    return Results.Ok(Db1Context.GetContext().Categories);
+    var searchedProduct = await db.Products.FirstOrDefaultAsync(c => idProduct == c.Idproduct);
+
+    return TypedResults.Ok(searchedProduct);
+});
+
+app.MapGet("categories/", async (ILogger<Program> logger, Db1Context db) =>
+{
+    try
+    {
+        List<Category> categories = await db.Categories.ToListAsync();
+
+        return Results.Ok(categories);
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Ошибка при добавлении продукта");
+
+        return Results.StatusCode(500);
+    }
 });
 
 app.Run();

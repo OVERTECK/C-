@@ -10,6 +10,6 @@ public partial class Category
 
     public string Title { get; set; } = null!;
 
-    [JsonIgnore]
+    //[JsonIgnore]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

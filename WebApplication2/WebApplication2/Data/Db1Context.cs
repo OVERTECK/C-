@@ -7,20 +7,6 @@ namespace WebApplication2.Entities;
 
 public partial class Db1Context : DbContext
 {
-    private static Db1Context context = null!;
-
-    public static Db1Context GetContext()
-    {
-        if (context == null)
-        {
-            context = new Db1Context();
-
-            return context;
-        }
-
-        return context;
-    }
-
     public Db1Context()
     {
     }

@@ -16,6 +16,6 @@ public partial class Product
 
     public byte[]? Image { get; set; }
 
-    [JsonIgnore]
+    //[JsonIgnore]
     public virtual Category Categories { get; set; } = null!;
 }
