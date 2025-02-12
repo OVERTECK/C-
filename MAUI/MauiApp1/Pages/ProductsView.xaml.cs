@@ -59,9 +59,14 @@ public partial class ProductsView : ContentPage
         }
     }
 
-    private async void collectionView_Loaded(object sender, EventArgs e)
+    public async void UpdateView()
     {
         collectionView.ItemsSource = await WebAPI.GetProducts();
+    }
+
+    private async void collectionView_Loaded(object sender, EventArgs e)
+    {
+        UpdateView();
     }
 
     private async void Entry_TextChanged(object sender, TextChangedEventArgs e)
@@ -85,6 +90,8 @@ public partial class ProductsView : ContentPage
     private async void Button_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new AddingProduct());
+
+        UpdateView();
     }
 
     private async void Button_Clicked_1(object sender, EventArgs e)
@@ -93,13 +100,17 @@ public partial class ProductsView : ContentPage
 
         using (var httpClient = new HttpClient())
         {
+            var token = await SecureStorage.GetAsync("token");
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
             foreach (Product product in selectedProducts)
             {
                 await httpClient.DeleteAsync($"{Lib.BaseAddress.Current}/products/" + product.Idproduct);
             }
         }
 
-        collectionView.ItemsSource = await WebAPI.GetProducts();
+        UpdateView();
     }
 
     private void ContentPage_SizeChanged(object sender, EventArgs e)

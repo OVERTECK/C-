@@ -5,6 +5,13 @@
              SizeChanged="ContentPage_SizeChanged"
              x:Name="page"
              MinimumWidthRequest="287">
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="1"></ToolbarItem>
+        <ToolbarItem Text="2"></ToolbarItem>
+        
+    </ContentPage.ToolbarItems>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -53,7 +60,7 @@
                 <DataTemplate>
                     <Border
                         Padding="10"
-                        WidthRequest="{OnIdiom Desktop=200, Phone=160}"
+                        
                         HeightRequest="{OnIdiom Phone=200, Desktop=200}">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"></RoundRectangle>

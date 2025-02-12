@@ -9,7 +9,7 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new NavigationPage(new ProductsView()));
+            return new Window(new NavigationPage(new AppShell()));
         }
     }
 }

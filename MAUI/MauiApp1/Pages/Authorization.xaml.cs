@@ -1,10 +1,6 @@
 using Entities;
-using Microsoft.Maui.ApplicationModel.Communication;
-using Microsoft.Maui.Controls.PlatformConfiguration.TizenSpecific;
 using Newtonsoft.Json;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace MauiApp1;
 
@@ -20,7 +16,7 @@ public partial class Authorization : ContentPage
         Navigation.PushAsync(Regisration.GetContext());
     }
 
-    private void OnCounterClicked(object sender, EventArgs e)
+    private async void OnCounterClicked(object sender, EventArgs e)
     {
         var emailField = entryEmail.Text;
         var passwordField = entryPassword.Text;
@@ -46,15 +42,19 @@ public partial class Authorization : ContentPage
         {
             var httpContent = new StringContent(userJson, Encoding.UTF8, "application/json");
 
-            var response = httpClient.PostAsync("https://4cbcncpt-7166.euw.devtunnels.ms/login", httpContent).Result;
+            var response = await httpClient.PostAsync($"{Lib.BaseAddress.Current}/login", httpContent);
 
             if (response.IsSuccessStatusCode)
             {
-                Navigation.PushAsync(new ProductsView());
+                var token = await response.Content.ReadAsStringAsync();
+
+                await SecureStorage.SetAsync("token", token.Trim('"'));
+
+                await Navigation.PushAsync(new ProductsView());
             }
             else
             {
-                DisplayAlert("Œ¯Ë·Í‡", response.Content.ReadAsStringAsync().Result, "ŒÍ");
+                await DisplayAlert("Œ¯Ë·Í‡", response.Content.ReadAsStringAsync().Result, "ŒÍ");
             }
         }
     }

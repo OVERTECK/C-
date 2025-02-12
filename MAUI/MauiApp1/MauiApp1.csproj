@@ -73,6 +73,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\AddingProduct.xaml.cs">
+	    <DependentUpon>AddingProduct.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\Authorization.xaml.cs">
+	    <DependentUpon>Authorization.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\ProductsView.xaml.cs">
+	    <DependentUpon>ProductsView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\Regisration.xaml.cs">
+	    <DependentUpon>Regisration.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\ReportLXML.xaml.cs">
+	    <DependentUpon>ReportLXML.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Pages\AddingProduct.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

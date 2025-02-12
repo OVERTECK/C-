@@ -68,9 +68,16 @@ public partial class AddingProduct : ContentPage
 
 		var stringContent = new StringContent(serializeProduct, Encoding.UTF8, "application/json");
 
-		var response = await httpClient.PostAsync($"{Lib.BaseAddress.Current}/products", stringContent);
+        var token = await SecureStorage.GetAsync("token");
+
+        httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+        var response = await httpClient.PostAsync($"{Lib.BaseAddress.Current}/products", stringContent);
 
 		if (response.IsSuccessStatusCode)
+
+			//ProductsView.upda
+
 			await Navigation.PopAsync();
 		else
 		{

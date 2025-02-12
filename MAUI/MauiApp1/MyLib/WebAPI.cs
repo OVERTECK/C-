@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Entities;
 using System.Net.Http.Json;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace Lib
 {
@@ -15,6 +17,10 @@ namespace Lib
         public async static Task<List<Product>> GetProducts()
         {
             var httpClient = new HttpClient();
+
+            var token = await SecureStorage.GetAsync("token");
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
             var response = await httpClient.GetAsync($"{Lib.BaseAddress.Current}/products");
 
@@ -75,6 +81,10 @@ namespace Lib
         public async static Task<List<Category>> GetCategories()
         {
             using var httpClient = new HttpClient();
+
+            var token = await SecureStorage.GetAsync("token");
+
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
             var response = await httpClient.GetAsync($"{Lib.BaseAddress.Current}/categories");
 

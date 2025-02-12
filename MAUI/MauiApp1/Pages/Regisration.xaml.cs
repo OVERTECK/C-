@@ -2,6 +2,7 @@ using Entities;
 using Newtonsoft.Json;
 using System.Text;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace MauiApp1;
 
@@ -31,7 +32,7 @@ public partial class Regisration : ContentPage
         Navigation.PopAsync();
     }
 
-    private void OnCounterClicked(object sender, EventArgs e)
+    private async void OnCounterClicked(object sender, EventArgs e)
     {
         signalLoginAccess.IsVisible = false;
         signalLoginBusy.IsVisible = false;
@@ -61,8 +62,15 @@ public partial class Regisration : ContentPage
 
         if (passwordField1 != passwordField2)
         {
-            DisplayAlert("Ошибка!", "Пароли не совпадают!", "Ок");
+            await DisplayAlert("Ошибка!", "Пароли не совпадают!", "Ок");
             
+            return;
+        }
+
+        if (!Regex.Match(emailField, @".+@.+\..+").Success) {
+
+            await DisplayAlert("Ошибка!", "Формат почты не верный.", "Ок");
+
             return;
         }
 
@@ -79,10 +87,14 @@ public partial class Regisration : ContentPage
         {
             var stringContent = new StringContent(serializedUser, Encoding.UTF8, "application/json");
 
-            var response = httpClient.PostAsync("https://4cbcncpt-7166.euw.devtunnels.ms/register", stringContent).Result;
+            var response = await httpClient.PostAsync($"{Lib.BaseAddress.Current}/register", stringContent);
 
             if (response.IsSuccessStatusCode)
             {
+                var token = await response.Content.ReadAsStringAsync();
+
+                await SecureStorage.SetAsync("token", token.Trim('"'));
+
                 Navigation.PushAsync(new ProductsView());
             }
             else
@@ -109,7 +121,7 @@ public partial class Regisration : ContentPage
 
     }
 
-    private void entryLogin_TextChanged(object sender, TextChangedEventArgs e)
+    private async void entryLogin_TextChanged(object sender, TextChangedEventArgs e)
     {
         signalLabelLogin.IsVisible = false;
 
@@ -125,7 +137,7 @@ public partial class Regisration : ContentPage
 
         using (var httpClient = new HttpClient())
         {
-            var response = httpClient.GetAsync("https://4cbcncpt-7166.euw.devtunnels.ms/users" + login).Result;
+            var response = await httpClient.GetAsync($"{Lib.BaseAddress.Current}/users/" + login);
 
             if (response.StatusCode == HttpStatusCode.NotFound)
             {
