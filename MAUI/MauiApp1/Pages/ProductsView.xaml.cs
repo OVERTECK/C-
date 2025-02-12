@@ -64,7 +64,7 @@ public partial class ProductsView : ContentPage
         collectionView.ItemsSource = await WebAPI.GetProducts();
     }
 
-    private async void collectionView_Loaded(object sender, EventArgs e)
+    private void collectionView_Loaded(object sender, EventArgs e)
     {
         UpdateView();
     }
@@ -118,8 +118,13 @@ public partial class ProductsView : ContentPage
         gridLayout.Span = Convert.ToInt16(page.Width / 200);
     }
 
-    private async void Button_Clicked_2(object sender, EventArgs e)
+    private async void exportData_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new ReportLXML());
+    }
+
+    private void exportData_Clicked_1(object sender, EventArgs e)
+    {
+
     }
 }

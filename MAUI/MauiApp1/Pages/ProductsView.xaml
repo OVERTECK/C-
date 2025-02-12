@@ -5,12 +5,14 @@
              SizeChanged="ContentPage_SizeChanged"
              x:Name="page"
              MinimumWidthRequest="287">
-    <ContentPage.ToolbarItems>
-
-        <ToolbarItem Text="1"></ToolbarItem>
-        <ToolbarItem Text="2"></ToolbarItem>
-        
-    </ContentPage.ToolbarItems>
+    
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="Данные">
+            <MenuFlyoutItem Text="Экспорт данных"
+                            x:Name="exportData"
+                            Clicked="exportData_Clicked"></MenuFlyoutItem>
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -83,15 +85,6 @@
             Grid.Row="2"
             StrokeThickness="1">
         </Border>
-
-        <!--<Button
-            Text="Экспорт данных"
-            IsVisible="{OnIdiom Desktop=true, Phone=false}"
-            Grid.Row="2"
-            Margin="{OnPlatform WinUI=30, Android=10}"
-            Clicked="Button_Clicked_2"
-            HorizontalOptions="End">
-        </Button>-->
 
         <Grid
             ColumnDefinitions="*,*"

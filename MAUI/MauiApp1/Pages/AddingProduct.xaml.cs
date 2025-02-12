@@ -76,8 +76,6 @@ public partial class AddingProduct : ContentPage
 
 		if (response.IsSuccessStatusCode)
 
-			//ProductsView.upda
-
 			await Navigation.PopAsync();
 		else
 		{

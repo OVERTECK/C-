@@ -74,6 +74,22 @@ public partial class Regisration : ContentPage
             return;
         }
 
+        var randomWord = Lib.RandomWord.GetWord(6);
+
+        var result = await DisplayPromptAsync(title: "Введите символы ниже.", randomWord);
+
+        if (result == null)
+        {
+            return;
+        }
+
+        if (result.ToLower() != randomWord.ToLower())
+        {
+            await DisplayAlert("Введенные данные не верные.", "Повторите попытку.", "Ок");
+
+            return;
+        }
+
         var newUser = new User
         {
             Email = emailField,

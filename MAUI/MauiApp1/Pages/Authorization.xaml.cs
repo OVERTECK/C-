@@ -30,6 +30,22 @@ public partial class Authorization : ContentPage
         if (string.IsNullOrWhiteSpace(emailField) || string.IsNullOrEmpty(passwordField))
             return;
 
+        var randomWord = Lib.RandomWord.GetWord(6);
+
+        var result = await DisplayPromptAsync(title: "Введите символы ниже.", randomWord);
+
+        if (result == null)
+        {
+            return;
+        }
+
+        if (result.ToLower() != randomWord.ToLower())
+        {
+            await DisplayAlert("Введенные данные не верные.", "Повторите попытку.", "Ок");
+
+            return;
+        }
+
         var user = new User
         {
             Email = emailField,
@@ -54,7 +70,7 @@ public partial class Authorization : ContentPage
             }
             else
             {
-                await DisplayAlert("Ошибка", response.Content.ReadAsStringAsync().Result, "Ок");
+                await DisplayAlert("Ошибка", await response.Content.ReadAsStringAsync(), "Ок");
             }
         }
     }
